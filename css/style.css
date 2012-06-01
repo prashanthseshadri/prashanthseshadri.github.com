@@ -1,0 +1,13 @@
+p1 
+{
+	color : #448A19;
+}
+body
+{
+	background-color: black;
+	font-family: 'Ubuntu', sans-serif
+	font-size : 10pts;
+}
+p1 #progress {
+	color : red;
+}
