@@ -1,13 +1,38 @@
-p1 
-{
-	color : #448A19;
-}
 body
 {
 	background-color: black;
-	font-family: 'Ubuntu', sans-serif
+	font-family: 'Ubuntu', monospace,
 	font-size : 10pts;
 }
-p1 #progress {
+
+#main
+{
+	color : #448A19;
+	padding-bottom : 5px;
+	height : 90%;
+	z-index: 0;
+}
+#main #progress 
+{
 	color : red;
+}
+
+
+#menu-bottom {
+	background-color : #333333;
+  	position: fixed;
+  	bottom: 0;
+  	margin-top: -2.5em;
+  	order: 1px solid blue;
+  	height : 5%;
+  	width : 99%;
+  	-moz-border-radius: 3px 3px 3px 3px;
+  	border-radius: 3px;
+}
+
+#menu-bottom .menuitem 
+{
+	color : red;
+	padding-right : 15px;
+	border-right : 1px dotted black;
 }

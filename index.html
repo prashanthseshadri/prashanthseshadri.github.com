@@ -3,9 +3,22 @@
 <!-- Web fonts included here -->
 <link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>
 
+<!-- Scrips included here -->
+<script type="text/javascript" src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/scripts.js"></script>
-<body onload="blinkCursor()" onkeydown="displayAlert()">
-	<p1>
-		<b>prashanth@mysystem ><span id="progress"></span></b><span class='cursor'> _</span>
-	</p1>
+
+
+<body onload="initialize()">
+	<div id="wrapper">
+		<div id = "main">
+			<p1>
+				<b>prashanth@mysystem:~$ <span id="progress"></span></b><span class='cursor'> _</span>
+			</p1>
+		</div>
+		<div id="menu-bottom" align="center">
+			<span class="menuitem">Item 1</span>
+			<span class="menuitem">Item 2</span>
+			<span class="menuitem">Item 3</span>
+		</div>
+	</div>
 </body>
