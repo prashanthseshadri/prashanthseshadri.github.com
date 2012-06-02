@@ -6,16 +6,17 @@
 <!-- Scrips included here -->
 <script type="text/javascript" src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/scripts.js"></script>
+<script src = "resources/commands.json"></script>
 
 <body onload="initialize()">
 	<div id="wrapper">
 		<div id = "main">
-			<p1 id="terminal-display" class="selected">
-				<b>prashanth@mysystem:~$ <span id="progress"></span></b>
+			<p>
+				<b>prashanth@mysystem:~$</b>
 				<!--<span class='cursor'> _</span>-->
 				<input type="text" class="selected" id="terminal-input" name="terminal-input"/><br>
-				<span id="output"></span>
-			</p1>
+				<span id="output" class="selected"></span>
+			</p>
 		</div>
 		<div id="menu-bottom" align="center">
 			<span class="menuitem">Item 1</span>

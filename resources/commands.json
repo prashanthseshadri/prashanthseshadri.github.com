@@ -1,0 +1,5 @@
+var commands = [
+{'name' : 'clear','description' : 'Clear the screen'},
+{'name' : 'exit','description' : 'Enter this command to quit this application'}
+];
+

@@ -1,0 +1,27 @@
+<script>
+
+function blinkCursor()
+{
+	cursor = document.querySelector(".cursor");
+	if(cursor!=null)
+	{
+		if(cursor.innerHTML.length>0)
+			cursor.innerHTML = "";
+		else
+			cursor.innerHTML = " _"
+		blinkingFunction = setTimeout("blinkCursor()",300);
+	}
+	else
+	{
+		//clear the timeout for the blinking function
+		clearTimeout(blinkingFunction);
+	}
+}
+
+</script>
+
+<body bgcolor="black" style="color: green" onLoad = "blinkCursor()">
+	<p>
+		<h1>Thanks for using the mock application <span class="cursor"> _</span></h1><br>
+	</p>
+</body>

@@ -32,7 +32,7 @@ body
 
 #menu-bottom .menuitem 
 {
-	color : red;
+	color : green;
 	padding-right : 15px;
 	border-right : 1px dotted black;
 }
@@ -45,3 +45,10 @@ body
 	outline: none;
 }
 
+.table-output {
+	color : yellow;
+}
+
+.output {
+	color : yellow;
+}
