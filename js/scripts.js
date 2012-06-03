@@ -1,5 +1,4 @@
 var cursor = null;
-var blinkingFunction;
 function setTextFocus()
 {
 	document.querySelector('#terminal-input.selected').focus();
@@ -7,10 +6,8 @@ function setTextFocus()
 }
 function initialize()
 {
-	document.onkeypress = keyCapture;
 	$('#terminal-input').live('keydown',processInput)
 	setTextFocus();
-//	blinkCursor();
 }
 function displayAlert()
 {
@@ -18,17 +15,6 @@ function displayAlert()
 	if(progressAlert.innerHTML.length==0)
 	{
 		progressAlert.innerHTML = "Under Construction..Try After months :P";
-	}
-	/*var progressAlert = document.querySelector("p");
-	progressAlert.innerHTML = progressAlert.innerHTML + "<br>" + "Hello";*/
-	
-}
-
-function keyCapture(e)
-{
-	if(e.keyCode==13)
-	{
-//		displayAlert();		
 	}
 }
 
@@ -83,12 +69,6 @@ function unsetActiveElements()
 }
 function createNewNodeAndAppend()
 {
-	/*var newNode = "<p id=\"terminal-display\" class=\"selected\">"+temp.innerHTML+"</p>";
-	temp.setAttribute("class","unselected");
-	currentTextBox.setAttribute('class','unselected');
-	currentTextBox.setAttribute('value',currentTextBox.value);
-	currentTextBox.setAttribute('readonly','true');
-	document.querySelector('#main').innerHTML = document.querySelector('#main').innerHTML + "<br>" + newNode;*/
 	//Don forget to unset the active elements before apending the new active elements
 	unsetActiveElements();
 	var newnode = createNewNode();
@@ -124,16 +104,12 @@ function processInput(e)
 			{
 				var commandList = commands;
 				var outputBlockContainer = document.querySelector("#output.selected");
-				//var outputBlock = outputBlockContainer.childNodes[7];
-				//commandList = JSON.parse(commandList);
 				var commandNode = document.createElement("table");
 				commandNode.className = "table-output";
-				//commandNode.innerHTML = "<table style='border:0;' align='center' cellspacing='2px' cellpadding='10px'>";
 				for(var i=0;i<commandList.length;i++)
 				{
 					commandNode.innerHTML +="<tr><td>" + commandList[i].name + "</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + commandList[i].description + "</td></tr>";
 				}
-				//commandNode.innerHTML += "</table>";
 				outputBlockContainer.appendChild(commandNode);
 				createNewNodeAndAppend();
 				break;

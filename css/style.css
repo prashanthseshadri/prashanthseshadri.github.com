@@ -9,8 +9,10 @@ body
 {
 	color : #448A19;
 	padding-bottom : 5px;
-	height : 90%;
+	height : 94%;
 	z-index: 0;
+	overflow :auto;
+	scrollbar-face-color: #abcdef;
 }
 #main #progress 
 {
