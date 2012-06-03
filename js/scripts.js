@@ -137,7 +137,7 @@ function showUsage(command)
 }
 function clearConsole()
 {
-	document.querySelector("#console").innerHTML = "Console Output : <br><span style='float:right;' onclick='clearConsole()'>Clear</a>";
+	document.querySelector("#console").innerHTML = "Console Output : <span style='float:right;' onclick='clearConsole()'>Clear</a><br>";
 	//once a click is made - the textbox focus will be out. So resetting it.
 	setTextFocus();
 }
