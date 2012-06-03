@@ -1,5 +1,8 @@
 var cursor = null;
 var blinkingFunction;
+var commandHistory = [];
+var commandHistoryMax = 15;
+var commandHistoryIndex = 0;
 function setTextFocus()
 {
 	document.querySelector('#terminal-input.selected').focus();
@@ -7,10 +10,8 @@ function setTextFocus()
 }
 function initialize()
 {
-	document.onkeypress = keyCapture;
 	$('#terminal-input').live('keydown',processInput)
 	setTextFocus();
-//	blinkCursor();
 }
 function displayAlert()
 {
@@ -19,19 +20,8 @@ function displayAlert()
 	{
 		progressAlert.innerHTML = "Under Construction..Try After months :P";
 	}
-	/*var progressAlert = document.querySelector("p");
-	progressAlert.innerHTML = progressAlert.innerHTML + "<br>" + "Hello";*/
 	
 }
-
-function keyCapture(e)
-{
-	if(e.keyCode==13)
-	{
-//		displayAlert();		
-	}
-}
-
 
 function clearScreen()
 {
@@ -83,12 +73,6 @@ function unsetActiveElements()
 }
 function createNewNodeAndAppend()
 {
-	/*var newNode = "<p id=\"terminal-display\" class=\"selected\">"+temp.innerHTML+"</p>";
-	temp.setAttribute("class","unselected");
-	currentTextBox.setAttribute('class','unselected');
-	currentTextBox.setAttribute('value',currentTextBox.value);
-	currentTextBox.setAttribute('readonly','true');
-	document.querySelector('#main').innerHTML = document.querySelector('#main').innerHTML + "<br>" + newNode;*/
 	//Don forget to unset the active elements before apending the new active elements
 	unsetActiveElements();
 	var newnode = createNewNode();
@@ -141,6 +125,11 @@ function clearConsole()
 	//once a click is made - the textbox focus will be out. So resetting it.
 	setTextFocus();
 }
+function clearCommandHistory()
+{
+	this.commandHistory = [];
+	commandHistoryIndex = 0;
+}
 function updateConsole(output)
 {
 	document.querySelector("#console").innerHTML += output + "<br>";
@@ -153,8 +142,8 @@ function imdb(movieName)
   	success: function(responseText) 
   	{
 		// Parsed JSON data to MovieData
-		var MovieData = eval("(" + responseText + ")");
-		
+		//var MovieData = eval("(" + responseText + ")");
+		var MovieData = JSON.parse(responseText);
 		var MovieTitle=MovieData.Title;
 		var Year=MovieData.Year;
 		var Director=MovieData.Director;
@@ -179,25 +168,45 @@ function imdb(movieName)
 		createNewNodeAndAppend();
   	}
 	});
-	
-
 }
+
+function printHistory()
+{
+	var newnode = document.createElement("span")
+	newnode.innerHTML = "<br>"
+	for(var i=0;i<commandHistory.length;i++)
+	{
+		newnode.innerHTML += commandHistory[i] + "<br>"; 
+	}
+	var outputBlockContainer = document.querySelector("#output.selected");
+	outputBlockContainer.appendChild(newnode);
+	createNewNodeAndAppend();
+}
+
 function processInput(e)
 {
 	var currentTextBox = document.querySelector("#terminal-input.selected");
 	var input = currentTextBox.value;
 	var parameters = input.split(" ");
-	if(input.length==0)
-		return;
-	var command = parameters[0];
+	var validCommand = true;
 	if(e.keyCode==13)
 	{
+		if(input.length==0)
+			updateConsole("Type help for usage");
+		var command = parameters[0];
 		//enter key is pressed
 		switch(command)
 		{
 			case "clear":
 			{
-				clearScreen();
+				if(parameters.length==2 && parameters[1]=="history")
+				{
+					clearCommandHistory();
+					createNewNodeAndAppend();
+					validCommand = false;
+				}					
+				else
+					clearScreen();
 				break;
 			}
 			case "imdb":
@@ -209,6 +218,7 @@ function processInput(e)
 				if(movieName.length==0)
 				{
 					showUsage(command);
+					validCommand = false;
 					break;
 				}
 				imdb(movieName);
@@ -217,8 +227,8 @@ function processInput(e)
 			case "help":
 			{
 				//empty parameter to showUsage will display all commands usages
-				command = "";
-				showUsage(command)
+				empty = "";
+				showUsage(empty)
 				break;
 			}
 			case "fuck":
@@ -236,6 +246,12 @@ function processInput(e)
 				document.location = "thanks.html";
 				break;	
 			}
+			case 'history':
+			{
+				printHistory();
+				validCommand = false;
+				break;
+			}
 			default:
 			{
 				var outputBlockContainer = document.querySelector("#output.selected");
@@ -243,9 +259,66 @@ function processInput(e)
 				result.className = "output";
 				result.innerHTML = "Unknown command. Type <i> help </i> for details.";
 				writeOutput(outputBlockContainer,result);
-				createNewNodeAndAppend(); 
+				createNewNodeAndAppend();
+				validCommand = false; 
 			}
 		}
+		//only those where validcommand has not been set to false will be put to history list - to reduce size of history
+		if(validCommand==true)
+		{
+			commandHistory.push(input);
+		}
+	}
+	else if(e.keyCode==38)
+	{
+		e.preventDefault();
+		//Up arrow has been pressed. Go Backward
+		if(commandHistory.length>0)
+		{
+			if(currentTextBox.value.length==0)
+			{
+				//Initial State. Make cursor to end element
+				commandHistoryIndex = commandHistory.length-1;
+			}
+			else if(commandHistoryIndex!=0 && commandHistoryIndex==commandHistory.length-1)
+			{
+				//Currently at end already and end text is already there. So just skip it
+				commandHistoryIndex--;
+			}
+			if(commandHistoryIndex>=0)
+			{
+				//valid cursor state
+				currentTextBox.value = commandHistory[commandHistoryIndex];
+				if(commandHistoryIndex>0)
+					commandHistoryIndex--;	
+			}
+		}
+		
+	}
+	else if(e.keyCode==40)
+	{
+		e.preventDefault();
+		//down has been pressed. Go forward
+		if(commandHistory.length>0)
+		{
+			if(currentTextBox.value.length==0)
+			{
+				//Initial State. Set cursor to beginning
+				commandHistoryIndex = 0;
+			}
+			else if(commandHistoryIndex!=commandHistory.length-1 && commandHistoryIndex==0)
+			{
+				commandHistoryIndex++;
+			}
+			if(commandHistoryIndex<commandHistory.length)
+			{
+				//valid cursor state
+				currentTextBox.value = commandHistory[commandHistoryIndex];
+				if(commandHistoryIndex<commandHistory.length-1)
+					commandHistoryIndex++;
+			}
+		}
+		
 	}
 	else if(e.keyCode==9)
 	{
