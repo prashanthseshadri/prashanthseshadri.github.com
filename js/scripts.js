@@ -10,7 +10,9 @@ function setTextFocus()
 }
 function initialize()
 {
-	$('#terminal-input').live('keydown',processInput)
+	$('#terminal-input').live('keydown',processInput);
+	//where ever you click - set the text focus to input
+	document.onclick = setTextFocus;
 	setTextFocus();
 }
 function displayAlert()
@@ -266,7 +268,8 @@ function processInput(e)
 		//only those where validcommand has not been set to false will be put to history list - to reduce size of history
 		if(validCommand==true)
 		{
-			commandHistory.push(input);
+			if(commandHistory.length==0 || commandHistory[commandHistory.length-1]!=input)
+				commandHistory.push(input);
 		}
 	}
 	else if(e.keyCode==38)
