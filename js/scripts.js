@@ -1,8 +1,9 @@
 var cursor = null;
 var blinkingFunction;
 var commandHistory = [];
-var commandHistoryMax = 15;
 var commandHistoryIndex = 0;
+var previousPrefix = "";
+var suggestions;
 function setTextFocus()
 {
 	document.querySelector('#terminal-input.selected').focus();
@@ -184,7 +185,22 @@ function printHistory()
 	outputBlockContainer.appendChild(newnode);
 	createNewNodeAndAppend();
 }
-
+function populateCommands(prefix)
+{
+	var result = [];
+	for(var i=0;i<commands.length;i++)
+	{
+		var command = commands[i].name;
+		for(var j=0;j<prefix.length;j++)
+		{
+			if(prefix.charAt(j)!=command.charAt(j))
+				break;
+		}
+		if(j==prefix.length)
+			result.push(command);
+	}
+	return result;
+}
 function processInput(e)
 {
 	var currentTextBox = document.querySelector("#terminal-input.selected");
@@ -326,6 +342,51 @@ function processInput(e)
 	else if(e.keyCode==9)
 	{
 		e.preventDefault();
-		currentTextBox.value += "Auto Completion to be done..";
+		//Auto Completion
+		var prefix = currentTextBox.value;
+		if(previousPrefix!=prefix)
+		{
+			suggestions = populateCommands(prefix);
+			previousPrefix = prefix
+		}
+		//Previously Computed Prefix
+		if(suggestions.length==1)
+		{
+			currentTextBox.value = suggestions[0];
+		}			
+		else if(suggestions.length>1)
+		{
+			printSuggestions();
+		}
 	}
+}
+
+function printSpaces(count)
+{
+	var result = "";
+	for(var i=0;i<count;i++)
+		result+="&nbsp;";
+	return result;
+}
+function printSuggestions()
+{
+	var outputBlockContainer = document.querySelector("#output.selected");
+	var newnode = document.createElement("table");
+	newnode.className = "table-output";
+	var count = suggestions.length;
+	//suggestions will be displayed in pairs
+	if(suggestions.length%2==1)
+		count = suggestions.length-1;
+	//count is ensure to be even always
+	for(var i=0;i<count;i+=2)
+	{
+		newnode.innerHTML += "<tr><td>" + suggestions[i] + "</td><td>" + printSpaces(5) + suggestions[i+1] + "</td></tr>"; 
+	}
+	if(count == suggestions.length-1)
+	{
+		//odd count. add the remaining one element
+		newnode.innerHTML += "<tr><td>"+suggestions[i]+"</td></tr>";
+	}
+	outputBlockContainer.appendChild(newnode);
+	createNewNodeAndAppend();
 }
