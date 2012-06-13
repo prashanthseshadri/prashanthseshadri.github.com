@@ -185,6 +185,16 @@ function printHistory()
 	outputBlockContainer.appendChild(newnode);
 	createNewNodeAndAppend();
 }
+
+function isPalindrome(string) {
+	for(var i=0; i<string.length; i++) {
+		if(string.charAt(i) != string.charAt(string.length-parseInt(1)-i)) {
+			return false;
+		}
+	return true;
+	}
+}
+
 function populateCommands(prefix)
 {
 	var result = [];
@@ -225,6 +235,75 @@ function processInput(e)
 				}					
 				else
 					clearScreen();
+				break;
+			}
+			case "echo":
+			{
+				if(parameters.length>=1)
+				{
+					var commandNode=document.createElement("table");
+					var message="";
+					commandNode.className="table-output";
+					var outputBlockContainer = document.querySelector("#output.selected");
+					if(parameters.length == 1) {
+						message = "empty";
+					}
+					for(var i=1; i<parameters.length; i++) {
+						message += parameters[i]+" ";
+					}
+					message=message.replace(/["']{1}/gi,"")
+					commandNode.innerHTML+="<tr><td>"+message+"</td></tr>";
+					outputBlockContainer.appendChild(commandNode);
+					createNewNodeAndAppend();
+					break;
+				}
+				break;
+			}
+			case "calc":
+			{
+				var commandNode=document.createElement("table");
+				var message="";
+				commandNode.className="table-output";
+				var outputBlockContainer = document.querySelector("#output.selected");
+				if(parameters.length>1)
+				{
+					for(var i=1; i<parameters.length; i++) {
+						message += parameters[i]+" ";
+					}
+					message=message.replace(/[^0-9\+\*\-\/ ]/g, '');
+					message = eval(message);		
+				} else {
+					message = "Enter calculation values";
+				}
+				commandNode.innerHTML+="<tr><td>"+message+"</td></tr>";
+				outputBlockContainer.appendChild(commandNode);
+				createNewNodeAndAppend();
+				break;
+			}
+			case "palin": case "palindrome":
+			{
+				var commandNode=document.createElement("table");
+				var message="";
+				commandNode.className="table-output";
+				var outputBlockContainer = document.querySelector("#output.selected");
+				if(parameters.length>1)
+				{
+					for(var i=1; i<parameters.length; i++) {
+						message += parameters[i]+" ";
+					}
+					message=message.replace(/["' ]/g,'');
+					if(isPalindrome(message)) {
+						message = "It is a palindrome";
+					} else {
+						message = "It is not a palindrome";
+					}
+				}
+				else {
+					message = "Enter string to check";
+				}
+				commandNode.innerHTML+="<tr><td>"+message+"</td></tr>";
+				outputBlockContainer.appendChild(commandNode);
+				createNewNodeAndAppend();
 				break;
 			}
 			case "imdb":

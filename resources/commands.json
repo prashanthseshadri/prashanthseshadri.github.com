@@ -4,5 +4,8 @@ var commands = [
 {'name' : 'imdb' , 'description' : 'IMDB ratings and info about the movie typed in place of movie-name','usage':'imdb &lt;movie-name&gt;'},
 {'name' : 'exit' , 'description' : 'exit the application'},
 {'name' : 'history', 'description' : 'To know the history of commands been typed'},
-{'name' : 'clear history', 'description' : 'Clear the current history'}
+{'name' : 'clear history', 'description' : 'Clear the current history'},
+{'name' : 'echo', 'description' : 'Display message on screen'},
+{'name' : 'calc', 'description' : 'Simple calculator fucntions like + * / -'},
+{'name' : 'palindorme or palin', 'description' : 'This command used to find a word is palindrome or not'}
 ];
