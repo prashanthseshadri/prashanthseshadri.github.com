@@ -7,5 +7,6 @@ var commands = [
 {'name' : 'clear history', 'description' : 'Clear the current history'},
 {'name' : 'echo', 'description' : 'Display message on screen'},
 {'name' : 'calc', 'description' : 'Simple calculator fucntions like + * / -'},
-{'name' : 'palindorme or palin', 'description' : 'This command used to find a word is palindrome or not'}
+{'name' : 'palindorme or palin', 'description' : 'This command used to find a word is palindrome or not'},
+{'name' : 'gpa', 'description' : 'This command is used to find your gpa', 'usage' : 'gpa subject_1_credit \"space\" subject_1_grade \"space"\ . . \"space"\ gpa subject_n_credit \"space\" subject_n_grade<br/> eg) 3 A 2 S 2 S 4 D 4 B 3 C 3 U 2 S 3 B'},
 ];
