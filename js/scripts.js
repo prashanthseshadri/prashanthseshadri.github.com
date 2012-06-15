@@ -211,6 +211,35 @@ function populateCommands(prefix)
 	}
 	return result;
 }
+function getGradeValue(grade){
+	var S = 10, A = 9, B = 8, C = 7, D = 6, E = 5, U = 0;
+	switch(grade){
+		case 'S': return S;
+		case 'A': return A;
+		case 'B': return B;
+		case 'C': return C;
+		case 'D': return D;
+		case 'E': return E;
+		case 'U': return U;
+		default: return 0;
+	}
+}
+function calculateGPA(marks, credits)
+{
+	var totalCredits = 0, totalSum = 0;
+	if(marks.length != credits.length){
+		return false;
+	}else {
+		for(var i = 0; i<marks.length; i++){
+			totalSum += getGradeValue(marks[i].toUpperCase())*credits[i];
+			totalCredits += credits[i]; 
+		}
+		if(totalCredits != 0)
+			return totalSum/totalCredits;
+		else 
+			return false;
+	}
+}
 function processInput(e)
 {
 	var currentTextBox = document.querySelector("#terminal-input.selected");
@@ -320,6 +349,45 @@ function processInput(e)
 				}
 				imdb(movieName);
 				break;
+			}
+			case "gpa":
+			{
+				//command syntax : gpa subject grades <space> credits
+				var commandNode=document.createElement("table");
+				var message="";				
+				if(parameters.length>1)
+				{
+					message = "";
+					var credits = new Array();
+					var grades = new Array();;
+					for(var i=1; i<parameters.length; i++) {
+						message += parameters[i]+" ";												
+					}
+					message=message.replace(/["' ]/g,'');					
+					var len = message.length;
+					var creditsCounter = 0, gradesCounter = 0;
+					for(var i = 0;i<len;i++){
+						if(i%2 == 0){
+							credits[creditsCounter] = parseInt(message[i]);
+							creditsCounter += 1;
+						}else{
+							grades[gradesCounter] = message[i];
+							gradesCounter += 1;
+						}
+					}
+					var result = calculateGPA(grades, credits);
+					if(result != false){
+						message = result;
+					}else {
+						message = "Invalid input use help for proper syntax";
+					}
+					commandNode.className="table-output";
+					var outputBlockContainer = document.querySelector("#output.selected");					
+					commandNode.innerHTML+="<tr><td>"+message+"</td></tr>";
+					outputBlockContainer.appendChild(commandNode);
+					createNewNodeAndAppend();
+					break;
+				}
 			}
 			case "help":
 			{
