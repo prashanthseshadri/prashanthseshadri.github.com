@@ -387,6 +387,10 @@ function processInput(e)
 					outputBlockContainer.appendChild(commandNode);
 					createNewNodeAndAppend();
 					break;
+				}else {
+					showUsage(command);
+					validCommand = false;
+					break;
 				}
 			}
 			case "help":
